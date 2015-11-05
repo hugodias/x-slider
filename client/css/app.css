@@ -1,0 +1,10 @@
+.x-slider li a.btn {
+  background: transparent;
+  border: 1px solid #FFF;
+  box-shadow: 1px 1px 1px #000;
+  padding: 10px 20px;
+  text-transform: lowercase;
+  font-weight: 300;
+  font-family: 'Verdana'; }
+
+/*# sourceMappingURL=app.css.map */
