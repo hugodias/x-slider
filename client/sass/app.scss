@@ -1,0 +1,92 @@
+.x-slider {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  overflow: auto;
+  box-shadow: 0 1px 2px rgba(0,0,0,.25);
+  ul {
+    height: 350px;
+    li {
+      height: 350px;
+      list-style: none;
+      float: left;
+      background-size: cover;
+      background-position: center center;
+
+      .x-slider__info {
+        padding: 30px 0 0 0;
+        width: 500px;
+        margin: 0 auto;
+        color: #FFF;
+        font-size: 18px;
+        line-height: 24px;
+        text-align: center;
+        color: rgba(255, 255, 255, .7);
+        text-shadow: 0 0 1px rgba(0, 0, 0, .05), 0 1px 2px rgba(0, 0, 0, .3);
+        h1 {
+          font-size: 40px;
+          line-height: 52px;
+          color: #fff;
+        }
+        p {
+          a {
+            display: none;
+          }
+        }
+        a {
+          color: #FFF;
+        }
+        a.btn {
+          display: inline-block;
+          margin: 15px 0 0;
+          padding: 9px 22px 7px;
+          clear: both;
+          color: #fff;
+          font-size: 12px;
+          font-weight: bold;
+          text-transform: uppercase;
+          text-decoration: none;
+          border: 2px solid rgba(255, 255, 255, .4);
+          border-radius: 5px;
+          webkit-filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .3));
+          -moz-filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .3));
+          -ms-filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .3));
+          -o-filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .3));
+          filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .3));
+        }
+      }
+    }
+  }
+
+  .dots {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 20px;
+    margin: 0 auto;
+    list-style: none;
+    li {
+      display: inline-block !important;
+      width: 10px;
+      height: 10px;
+      margin: 0 4px !important;
+      float: none;
+
+      text-indent: -999em !important;
+
+      border: 2px solid #fff;
+      border-radius: 6px;
+
+      cursor: pointer;
+      opacity: .4;
+
+      -webkit-transition: background .5s, opacity .5s;
+      -moz-transition: background .5s, opacity .5s;
+      transition: background .5s, opacity .5s;
+      &.active {
+        background: #fff;
+        opacity: 1;
+      }
+    }
+  }
+}

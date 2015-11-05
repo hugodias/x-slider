@@ -1,0 +1,3 @@
+.x_slider { position: relative; overflow: auto; }
+.x_slider li { list-style: none; }
+.x_slider ul li { float: left; }

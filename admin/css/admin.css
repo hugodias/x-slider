@@ -1,0 +1,12 @@
+#slider-image-container img {
+    width: 100%;
+    height: auto;
+}
+
+#slider-image-info {
+    display: none;
+}
+
+#remove-slider {
+    color: #a00;
+}
