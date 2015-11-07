@@ -39,20 +39,31 @@ require_once( plugin_dir_path( __FILE__ ) . 'client/class-x-slider-client.php' )
  * then kicking off the plugin from this point in the file does
  * not affect the page life cycle.
  *
- * @since    0.1.0
+ * @since    1.0.0
  */
 function run_x_slider() {
-
 	$plugin = new X_Slider();
 	$plugin->run();
-
 }
 
 run_x_slider();
 
 
-function render_x_slider( $featured_image = null, $bullets = null, $arrows = null ) {
-	$xSlider = new X_Slider_Client( $featured_image, $bullets, $arrows );
+/**
+ * Render the slider
+ *
+ * The slider will be rendered where you put this function
+ *
+ * None of the fields are required
+ *
+ * @param null $featured_image
+ * @param null $bullets
+ * @param null $arrows
+ *
+ * @since 1.0.0
+ */
+function x_slider( $featured_image = null ) {
+	$xSlider = new X_Slider_Client( $featured_image );
 
 	return $xSlider->run();
 }

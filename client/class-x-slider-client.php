@@ -20,194 +20,239 @@
  * @subpackage X_Slider_Client/client
  * @author     Hugodias <hugooodias@gmail.com>
  */
-class X_Slider_Client
-{
+class X_Slider_Client {
 
-    /**
-     * The ID of this plugin.
-     *
-     * @since    1.0.0
-     * @access   private
-     * @var      string $name The ID of this plugin.
-     */
-    private $name;
+	/**
+	 * The ID of this plugin.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 * @var      string $name The ID of this plugin.
+	 */
+	private $name;
 
-    /**
-     * The current version of the plugin.
-     *
-     * @since    1.0.0
-     * @access   private
-     * @var      string $version The version of the plugin
-     */
-    private $version;
+	/**
+	 * The current version of the plugin.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 * @var      string $version The version of the plugin
+	 */
+	private $version;
 
-    /**
-     * The Featured Image Slug used for the slides
-     *
-     * @since    1.0.0
-     * @access   private
-     * @var      string $featured_image_name The Featured image slug.
-     */
-    private $featured_image_name;
-
-
-    /**
-     * Enable bullets navigation
-     *
-     * @since    1.0.0
-     * @access   private
-     * @var bool
-     */
-    private $bullets;
-
-    /**
-     * Enable arrows navigation
-     *
-     * @since    1.0.0
-     * @access   private
-     * @var bool
-     */
-    private $arrows;
-
-    /**
-     * Initializes the plugin by defining the properties.
-     *
-     * @since 1.0.0
-     */
-    public function __construct($featured_image_name = null, $bullets = null, $arrows = null)
-    {
-
-        $this->name = 'x-slider';
-        $this->version = '1.0.0';
-        $this->featured_image_name = $featured_image_name ? $featured_image_name : 'x_slider_full';
-        $this->bullets = $bullets ? $featured_image_name : true;
-        $this->arrows = $arrows ? $featured_image_name : true;
-
-    }
-
-    /**
-     * Defines the hooks that will register and enqueue the JavaScriot
-     * and the meta box that will render the option.
-     *
-     * @since 1.0.0
-     */
-    public function run()
-    {
-        $slides = $this->get_slides();
-
-        if ($slides) {
-            $slider = '<div class="x-slider">';
-
-            if ($this->arrows) {
-                # $slider .= $this->get_arrows();
-            }
-
-            $slider .= '<ul>';
-
-            foreach ($slides as $slide) {
-                $slider .= $this->loopAndRender($slide['image'], $slide['title'], $slide['description'], $slide['link'], $slide['label']);
-            }
-
-            $slider .= '</ul></div>';
-
-            echo $slider;
-        } else {
-            echo "No sliders avaliable";
-        }
-
-        return;
-    }
+	/**
+	 * The Featured Image Slug used for the slides
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 * @var      string $featured_image_name The Featured image slug.
+	 */
+	private $featured_image_name;
 
 
-    /**
-     * Render a single slide
-     *
-     * @param $image
-     * @param $title
-     * @param $description
-     * @param $link
-     * @param $label
-     *
-     * @return string
-     *
-     * @since 1.0.0
-     */
-    private function loopAndRender($image, $title = null, $description = null, $link = null, $label = null)
-    {
-        $tmpl = "<li style='background-image: url(" . esc_url_raw($image) . ");'>";
+	/**
+	 * Enable bullets navigation
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 * @var bool
+	 */
+	private $bullets;
+
+	/**
+	 * Enable arrows navigation
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 * @var bool
+	 */
+	private $arrows;
 
 
-        $tmpl .= "<div class='x-slider__info'>";
-
-        if ($title) {
-            $tmpl .= "<h1>" . $title . "</h1>";
-        }
-
-        if ($description) {
-            $tmpl .= "<p>" . $description . "</p>";
-        }
-
-        if ($link && $label) {
-            $tmpl .= "<a class='btn' href='" . $link . " '>" . $label . "</a>";
-        }
-
-        $tmpl .= "</div>";
-
-        $tmpl .= "</li>";
-
-        return $tmpl;
-    }
-
-    /**
-     * Arrows template
-     *
-     * @return string
-     *
-     * @since 1.0.0
-     */
-    private function get_arrows()
-    {
-        return '<a href="#" class="unslider-arrow prev">Previous slide</a><a href="#" class="unslider-arrow next">Next slide</a>';
-    }
-
-    /**
-     * Retrieve slides selected in the Wordpress Admin
-     *
-     * @return array
-     *
-     * @since 1.0.0
-     */
-    private function get_slides()
-    {
-
-        $slides = array();
-
-        $args = array(
-            'meta_key' => 'x-slider-selected',
-            'meta_value' => 1
-        );
-
-        $q = new WP_Query($args);
-
-        if ($q->have_posts()) :
+	/**
+	 * Plugin options
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 * @var array
+	 */
+	protected $options;
 
 
-            while ($q->have_posts()) : $q->the_post();
-                $slides[] = array(
-                    'title' => get_the_title(),
-                    'description' => get_the_excerpt(),
-                    'image' => get_post_meta($q->post->ID, 'slider-src', true),
-                    'link' => get_the_permalink(),
-                    'label' => 'See'
-                );
-            endwhile;
+	/**
+	 * Timeout option
+	 *
+	 * @var string
+	 */
+	protected $timeout;
 
-            wp_reset_postdata();
+	/**
+	 * Button label option
+	 *
+	 * @var string
+	 */
+	protected $button_label;
 
-        else:
-            # Todo:
-        endif;
 
-        return $slides;
-    }
+	/**
+	 * Initializes the plugin by defining the properties.
+	 *
+	 * @since 1.0.0
+	 */
+	public function __construct( $featured_image_name = null ) {
+
+		$this->name                = 'x-slider';
+		$this->version             = '1.0.0';
+		$this->featured_image_name = $featured_image_name ? $featured_image_name : 'x_slider_full';
+
+		$this->options = get_option( 'x_slider_layout_options' );
+
+		$this->bullets = ! empty( $this->options['show_bullets'] );
+		$this->arrows  = ! empty( $this->options['show_arrows'] );
+		$this->timeout = ! empty( $this->options['timeout'] ) ? $this->options['timeout'] : '5000';
+
+		$this->button_label = ! empty( $this->options['button_label'] ) ? $this->options['button_label'] : 'Read more';
+	}
+
+	/**
+	 * Defines the hooks that will register and enqueue the JavaScriot
+	 * and the meta box that will render the option.
+	 *
+	 * @since 1.0.0
+	 */
+	public function run() {
+		$slides = $this->get_slides();
+
+		if ( $slides ) {
+			$slider = '<div class="x-slider" ' . $this->mount_attributes() . '>';
+
+			if ( $this->arrows ) {
+				$this->get_arrows();
+			}
+
+			$slider .= '<ul>';
+
+			foreach ( $slides as $slide ) {
+				$slider .= $this->loopAndRender( $slide['image'], $slide['title'], $slide['description'], $slide['link'], $slide['label'] );
+			}
+
+			$slider .= '</ul></div>';
+
+			echo $slider;
+		} else {
+			echo "No sliders avaliable";
+		}
+
+		return;
+	}
+
+	/**
+	 * Render a single slide
+	 *
+	 * @param $image
+	 * @param $title
+	 * @param $description
+	 * @param $link
+	 * @param $label
+	 *
+	 * @return string
+	 *
+	 * @since 1.0.0
+	 */
+	private function loopAndRender( $image, $title = null, $description = null, $link = null, $label = null ) {
+		$tmpl = '<li id="x-slider-' . mt_rand( 1000, 9999 ) . '"  data-x-slider-image="' . esc_url_raw( $image ) . '" >';
+
+		$tmpl .= '<div class="x-slider__info">';
+
+		if ( boolval( $this->options['show_title'] ) ) {
+			$tmpl .= '<h1>' . $title . '</h1>';
+		}
+
+		if ( boolval( $this->options['show_excerpt'] ) ) {
+			$tmpl .= '<p>' . $description . '</p>';
+		}
+
+		if ( $link && $label ) {
+			$tmpl .= '<a class="btn" href="' . $link . '">' . $label . '</a>';
+		}
+
+		$tmpl .= '</div>';
+
+		$tmpl .= '</li>';
+
+		return $tmpl;
+	}
+
+
+	/**
+	 * Arrows template
+	 *
+	 * @return string
+	 *
+	 * @since 1.0.0
+	 *
+	 * @todo implement this feature
+	 */
+	private function get_arrows() {
+		return;
+	}
+
+	/**
+	 * Retrieve slides selected in the Wordpress Admin
+	 *
+	 * @return array
+	 *
+	 * @since 1.0.0
+	 */
+	private function get_slides() {
+
+		$slides = array();
+
+		$args = array(
+			'meta_key'   => 'x-slider-selected',
+			'meta_value' => 1
+		);
+
+		$q = new WP_Query( $args );
+
+		if ( $q->have_posts() ) :
+
+
+			while ( $q->have_posts() ) : $q->the_post();
+				$slides[] = array(
+					'title'       => get_the_title(),
+					'description' => get_the_excerpt(),
+					'image'       => get_post_meta( $q->post->ID, 'slider-src', true ),
+					'link'        => get_the_permalink(),
+					'label'       => $this->button_label
+				);
+			endwhile;
+
+			wp_reset_postdata();
+
+		else:
+			# Todo:
+		endif;
+
+		return $slides;
+	}
+
+
+	/**
+	 * Render slide attriutes via html data
+	 *
+	 * @return string
+	 *
+	 * @since 1.0.0
+	 */
+	private function mount_attributes() {
+		$attr = '';
+
+		$attr .= 'data-x-slider-timeout = "' . $this->timeout . '" ';
+		$attr .= 'data-x-slider-bullets = "' . $this->bullets . '" ';
+		$attr .= 'data-x-slider-arrows = "' . $this->arrows . '" ';
+
+		return $attr;
+	}
+
 }
