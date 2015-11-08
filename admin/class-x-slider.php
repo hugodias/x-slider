@@ -72,7 +72,7 @@ class X_Slider {
 		$this->thumbnail_slug   = 'x_slider_full';
 		$this->thumbnail_name   = 'X-Slider Full';
 		$this->thumbnail_width  = 9999;
-		$this->thumbnail_height = 350;
+		$this->thumbnail_height = 450;
 
 	}
 
@@ -173,11 +173,12 @@ class X_Slider {
 			$this->name,
 			plugin_dir_url( __FILE__ ) . '../client/js/x-slider.min.js',
 			array( 'jquery' ),
-			'1.0',
+			'1.1',
 			'all'
 		);
 
 	}
+
 
 	/**
 	 * Register client side styles
@@ -189,6 +190,7 @@ class X_Slider {
 			$this->name,
 			plugin_dir_url( __FILE__ ) . '../client/css/x-slider.min.css' );
 	}
+
 
 	/**
 	 * Sanitized and saves the post slider src meta data specific with this post.

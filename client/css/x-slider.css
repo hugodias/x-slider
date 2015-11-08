@@ -7,10 +7,10 @@
     position: relative;
     margin: 0;
     padding: 0;
-    height: 350px; }
+    height: 450px; }
     .x-slider ul li {
       position: relative;
-      height: 350px;
+      height: 450px;
       list-style: none;
       float: left;
       background-size: cover;

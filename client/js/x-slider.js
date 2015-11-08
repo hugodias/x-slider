@@ -140,7 +140,7 @@
             bullets: true,
             arrows: false,
             timeout: 5000,
-            blur: 2
+            brightness: 0.6
         };
 
     function Plugin(element, options) {
@@ -154,36 +154,77 @@
 
     $.extend(Plugin.prototype, {
         init: function () {
+            this.configure();
+
             this.stylize();
 
             this.attatch();
         },
+
+        configure: function () {
+            if ($(this.element).data('x-slider-timeout')) {
+                this.settings.timeout = $(this.element).data('x-slider-timeout');
+            }
+        },
+
+        /**
+         * Stylize the slider
+         */
         stylize: function () {
-            var settings = this.settings;
+            var _this = this;
 
             $(this.element).children('ul').children('li').each(function () {
                 var bg = $(this).data('x-slider-image');
                 var id = $(this).attr('id');
 
-                $('#' + id + ":before").addRule({
-                    content: "",
-                    background: "url('" + bg + "') center center",
-                    width: "100%",
-                    height: "100%",
-                    "z-index": -1,
-                    position: "absolute",
-                    left: 0,
-                    right: 0,
-                    display: "block"
-                });
+                // Configure the background image on each li
+                _this.set_background_image(id, bg);
 
-                if (settings.blur) {
-                    $('#' + id + ":before").addRule({
-                        "-webkit-filter": "blur(" + settings.blur + "px)"
-                    })
-                }
+                // Reduce de image brightness for better readability
+                _this.reduce_brightness(_this.settings, id);
             });
         },
+
+        /**
+         * Configure the slider image as a background
+         *
+         * @param id
+         * @param bg
+         */
+        set_background_image: function (id, bg) {
+            $('#' + id + ":before").addRule({
+                content: "",
+                background: "url('" + bg + "') center center",
+                width: "100%",
+                height: "100%",
+                "z-index": -1,
+                position: "absolute",
+                left: 0,
+                right: 0,
+                display: "block"
+            });
+        },
+        /**
+         * Reduce background image brightness
+         *
+         *
+         * @param settings
+         * @param id
+         */
+        reduce_brightness: function (settings, id) {
+            if (this.settings.brightness) {
+                $('#' + id + ":before")
+                    .addRule({
+                        "filter": "brightness(" + this.settings.brightness + ");",
+                        "ms-filter": "brightness(" + this.settings.brightness + ");",
+                        "moz-filter": "brightness(" + this.settings.brightness + ");",
+                        "-webkit-filter": "brightness(" + this.settings.brightness + ");"
+                    });
+            }
+        },
+        /**
+         * Attatch the unslider on the main element
+         */
         attatch: function () {
             $(this.element).unslider({
                 speed: 500,
@@ -203,6 +244,7 @@
         });
     };
 
-})(jQuery, window, document);
+})
+(jQuery, window, document);
 
 $(".x-slider").xSlider();
