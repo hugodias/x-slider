@@ -7,7 +7,7 @@ Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Simple, beatutiful, responsive and lighweight slider that don't suck.
+Simple, beautiful, responsive and lightweight slider that don't suck.
 
 == Description ==
 The most famous sliders are only based on images and titles, but in most cases we use these sliders to display the posts, and there lies the problem.
@@ -21,11 +21,12 @@ I present to you the X- slider, a slider based on posts! No complicated interfac
 The X-slider was created with the purpose of being simple, easy to use, easy to set up and of course, easy to change, because it was made for Developers.
 
 **Features**
-- Beautiful full width responsive image slider.
-- Extreme simple and efficient user interface.
-- All slides work based on Posts. You attatch a slide directly inside the post editor.
-- Super easy to customize, as a developer you'll love it.
-- Super easy to add, change and remove the slides. The admin user will also love it.
+
+* Beautiful full width responsive image slider.
+* Extreme simple and efficient user interface.
+* All slides work based on Posts. You attach a slide directly inside the post editor.
+* Super easy to customize, as a developer you'll love it.
+* Super easy to add, change and remove the slides. The admin user will also love it.
 
 == Installation ==
 1. Upload `x-slider` to the `/wp-content/plugins/` directory
