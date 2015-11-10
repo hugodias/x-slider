@@ -210,7 +210,13 @@ class X_Slider {
 		}
 
 		if ( isset( $_REQUEST['x-slider-selected'] ) ) {
-			update_post_meta( $post_id, 'x-slider-selected', $_REQUEST['x-slider-selected'] );
+
+			if ( empty( $_REQUEST['slider-src'] ) ) {
+				update_post_meta( $post_id, 'x-slider-selected', 0 );
+			} else {
+				update_post_meta( $post_id, 'x-slider-selected', $_REQUEST['x-slider-selected'] );
+			}
+
 		} else {
 			update_post_meta( $post_id, 'x-slider-selected', 0 );
 		}

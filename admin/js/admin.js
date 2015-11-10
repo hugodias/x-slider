@@ -62,7 +62,7 @@ function renderMediaUploader($) {
         }
 
         // After that, set the properties of the image and display it
-        $('#slider-image-container')
+        $('#x-slider-slider-image-container')
             .children('img')
             .attr('src', src)
             .attr('alt', json.caption)
@@ -71,19 +71,20 @@ function renderMediaUploader($) {
             .parent()
             .removeClass('hidden');
 
-        // Next, hide the anchor responsible for allowing the user to select an image
-        $('#slider-image-container')
-            .prev()
+        // Next, hide the anchor responsible for allowing the user to select an slide
+        $('#x-slider-choose-slider')
+            .parent()
             .hide();
 
         // Display the anchor for the removing the featured image
-        $('#slider-image-container')
-            .next()
-            .show();
+        $('.x-slider-controls')
+            .removeClass('hidden')
+            .find('input[type=checkbox]')
+            .attr('checked', 'checked');
 
         // Store the image's information into the meta data fields
-        $('#slider-src').val(src);
-        $('#slider-title').val(json.title);
+        $('#x-slider-slider-src').val(src);
+        $('#x-slider-slider-title').val(json.title);
 
     });
 
@@ -106,26 +107,24 @@ function resetUploadForm($) {
     'use strict';
 
     // First, we'll hide the image
-    $('#slider-image-container')
+    $('#x-slider-slider-image-container')
         .children('img')
         .hide();
 
     // Then display the previous container
-    $('#slider-image-container')
-        .prev()
+    $('#x-slider-choose-slider')
+        .parent()
         .show();
 
-    // We add the 'hidden' class back to this anchor's parent
-    $('#slider-image-container')
-        .next()
-        .hide()
-        .addClass('hidden');
+    $('.x-slider-controls')
+        .addClass('hidden')
+        .find('input[type=checkbox]')
+        .removeAttr('checked');
 
     // Finally, we reset the meta data input fields
-    $('#slider-image-info')
+    $('#x-slider-slider-image-info')
         .children()
         .val('');
-
 }
 
 /**
@@ -142,16 +141,19 @@ function renderFeaturedImage($) {
     /* If a thumbnail URL has been associated with this image
      * Then we need to display the image and the reset link.
      */
-    if ('' !== $.trim($('#slider-src').val())) {
+    if ('' !== $.trim($('#x-slider-slider-src').val())) {
 
-        $('#slider-image-container').removeClass('hidden');
+        $('#x-slider-slider-image-container').removeClass('hidden');
 
-        $('#choose-slider')
+        $('#x-slider-choose-slider')
             .parent()
             .hide();
 
-        $('#remove-slider')
+        $('#x-slider-remove-slider')
             .parent()
+            .removeClass('hidden');
+
+        $('.x-slider-controls')
             .removeClass('hidden');
 
     }
@@ -165,12 +167,12 @@ function renderFeaturedImage($) {
 
         renderFeaturedImage($);
 
-        $('#choose-slider').on('click', function (evt) {
+        $('#x-slider-choose-slider').on('click', function (evt) {
             evt.preventDefault();
             renderMediaUploader($);
         });
 
-        $('#remove-slider').on('click', function (evt) {
+        $('#x-slider-remove-slider').on('click', function (evt) {
 
             // Stop the anchor's default behavior
             evt.preventDefault();
