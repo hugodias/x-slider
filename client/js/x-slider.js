@@ -1,6 +1,8 @@
-;
 (function (e, t) {
-    if (!e)return t;
+    "use strict";
+    if (!e) {
+        return t;
+    }
     var n = function () {
         this.el = t;
         this.items = t;
@@ -194,14 +196,18 @@
         set_background_image: function (id, bg) {
             $('#' + id + ":before").addRule({
                 content: "",
-                background: "url('" + bg + "') center center",
                 width: "100%",
                 height: "100%",
                 "z-index": -1,
                 position: "absolute",
                 left: 0,
                 right: 0,
-                display: "block"
+                display: "block",
+                background: "url('" + bg + "') center center",
+                "-webkit-background-size": "cover",
+                "-moz-background-size": "cover",
+                "-o-background-size": "cover",
+                "background-size": "cover"
             });
         },
         /**
