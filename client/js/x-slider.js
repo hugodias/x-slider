@@ -140,7 +140,6 @@
     var pluginName = "xSlider",
         defaults = {
             bullets: true,
-            arrows: false,
             timeout: 5000,
             brightness: 0.6
         };

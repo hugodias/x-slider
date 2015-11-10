@@ -398,17 +398,6 @@ class X_Slider {
 		);
 
 		add_settings_field(
-			'show_arrows',
-			'Arrows',
-			array( $this, 'x_slider_toggle_arrows_callback' ),
-			'x_slider_layout_options',
-			'layout_settings_section',
-			array(
-				'Check this box if you want to display the next and previous arrows for your slider.'
-			)
-		);
-
-		add_settings_field(
 			'timeout',
 			'Timeout',
 			array( $this, 'x_slider_change_timeout_callback' ),
@@ -490,22 +479,6 @@ class X_Slider {
 
 		$html = '<input type="checkbox" id="show_bullets" name="x_slider_layout_options[show_bullets]" value="1" ' . checked( 1, $options['show_bullets'], false ) . '/>';
 		$html .= '<label for="show_bullets"> ' . $args[0] . '</label>';
-
-		echo $html;
-	}
-
-	/**
-	 * Show arrows field
-	 *
-	 * @param $args
-	 *
-	 * @since 1.0.0
-	 */
-	public function x_slider_toggle_arrows_callback( $args ) {
-		$options = get_option( 'x_slider_layout_options' );
-
-		$html = '<input type="checkbox" id="show_arrows" name="x_slider_layout_options[show_arrows]" value="1" ' . checked( 1, $options['show_arrows'], false ) . '/>';
-		$html .= '<label for="show_arrows"> ' . $args[0] . '</label>';
 
 		echo $html;
 	}

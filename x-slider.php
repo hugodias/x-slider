@@ -57,8 +57,6 @@ run_x_slider();
  * None of the fields are required
  *
  * @param null $featured_image
- * @param null $bullets
- * @param null $arrows
  *
  * @since 1.0.0
  */

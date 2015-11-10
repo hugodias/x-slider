@@ -59,15 +59,6 @@ class X_Slider_Client {
 	 */
 	private $bullets;
 
-	/**
-	 * Enable arrows navigation
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var bool
-	 */
-	private $arrows;
-
 
 	/**
 	 * Plugin options
@@ -108,7 +99,6 @@ class X_Slider_Client {
 		$this->options = get_option( 'x_slider_layout_options' );
 
 		$this->bullets = ! empty( $this->options['show_bullets'] );
-		$this->arrows  = ! empty( $this->options['show_arrows'] );
 		$this->timeout = ! empty( $this->options['timeout'] ) ? $this->options['timeout'] : '5000';
 
 		$this->button_label = ! empty( $this->options['button_label'] ) ? $this->options['button_label'] : 'Read more';
@@ -125,10 +115,6 @@ class X_Slider_Client {
 
 		if ( $slides ) {
 			$slider = '<div class="x-slider" ' . $this->mount_attributes() . '>';
-
-			if ( $this->arrows ) {
-				$this->get_arrows();
-			}
 
 			$slider .= '<ul>';
 
@@ -181,20 +167,6 @@ class X_Slider_Client {
 		$tmpl .= '</li>';
 
 		return $tmpl;
-	}
-
-
-	/**
-	 * Arrows template
-	 *
-	 * @return string
-	 *
-	 * @since 1.0.0
-	 *
-	 * @todo implement this feature
-	 */
-	private function get_arrows() {
-		return;
 	}
 
 	/**
@@ -250,7 +222,6 @@ class X_Slider_Client {
 
 		$attr .= 'data-x-slider-timeout = "' . $this->timeout . '" ';
 		$attr .= 'data-x-slider-bullets = "' . $this->bullets . '" ';
-		$attr .= 'data-x-slider-arrows = "' . $this->arrows . '" ';
 
 		return $attr;
 	}
