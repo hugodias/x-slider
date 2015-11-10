@@ -1,6 +1,6 @@
 <p class="hide-if-no-js x-slider-no-bottom">
 	<a title="Choose slider image" href="javascript:;" id="x-slider-choose-slider" class="button button-primary button-large">
-		Choose slider image
+		Choose image
 	</a>
 </p>
 
