@@ -171,11 +171,11 @@ class X_Slider {
 		wp_register_script(
 			$this->name,
 			plugin_dir_url( __FILE__ ) . '../client/js/x-slider.min.js',
-			array('jquery'),
+			array( 'jquery' ),
 			'1.0.1',
-			true);
+			true );
 
-		wp_enqueue_script($this->name);
+		wp_enqueue_script( $this->name );
 	}
 
 
@@ -311,7 +311,7 @@ class X_Slider {
 			</form>
 
 		</div>
-	<?php
+		<?php
 	}
 
 
