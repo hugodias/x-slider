@@ -168,15 +168,14 @@ class X_Slider {
 	 * @since 1.0.0
 	 */
 	public function enqueue_client_scripts() {
-
-		wp_enqueue_script(
+		wp_register_script(
 			$this->name,
 			plugin_dir_url( __FILE__ ) . '../client/js/x-slider.min.js',
-			array( 'jquery' ),
-			'1.1',
-			'all'
-		);
+			array('jquery'),
+			'1.0.1',
+			true);
 
+		wp_enqueue_script($this->name);
 	}
 
 
