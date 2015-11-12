@@ -14,7 +14,7 @@
  * Plugin Name: X-Slider
  * Plugin URI:  https://github.com/hugodias/x-slider
  * Description: Simple and lightweight slider for Wordpress
- * Version:     1.0.0
+ * Version:     1.1.0
  * Author:      Hugo Dias
  * Author URI:  http://github.com/hugodias
  * License:     GPL-2.0+

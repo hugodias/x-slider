@@ -1,5 +1,9 @@
 <?php
-
+if ( ! function_exists( 'boolval' ) ) {
+	function boolval( $val ) {
+		return (bool) $val;
+	}
+}
 /**
  * The dashboard-specific functionality of the plugin.
  *
@@ -61,19 +65,35 @@ class X_Slider {
 	private $thumbnail_width;
 
 	/**
+	 * @var
+	 * @since 1.1.0
+	 */
+	private $crop;
+
+	/**
+	 * @var
+	 * @since 1.1.0
+	 */
+	private $options;
+
+	/**
 	 * Initializes the plugin by defining the properties.
 	 *
 	 * @since 1.0.0
 	 */
 	public function __construct() {
 
-		$this->name             = 'x-slider';
-		$this->version          = '1.0.2';
-		$this->thumbnail_slug   = 'x_slider_full';
-		$this->thumbnail_name   = 'X-Slider Full';
-		$this->thumbnail_width  = 9999;
-		$this->thumbnail_height = 450;
+		$this->name           = 'x-slider';
+		$this->version        = '1.1.0';
+		$this->thumbnail_slug = 'x_slider_full';
+		$this->thumbnail_name = 'X-Slider Full';
 
+		$this->options = get_option( 'x_slider_layout_options' );
+
+		$this->thumbnail_width  = ! empty( $this->options['width'] ) ? intval( $this->options['width'] ) : 9999;
+		$this->thumbnail_height = ! empty( $this->options['height'] ) ? intval( $this->options['height'] ) : 450;
+
+		$this->crop = ! empty( $this->options['crop'] ) ? boolval( $this->options['crop'] ) : true;
 	}
 
 	/**
@@ -103,6 +123,7 @@ class X_Slider {
 
 		add_action( 'admin_init', array( $this, 'x_slider_initialize_layout_options' ) );
 		add_action( 'admin_init', array( $this, 'x_slider_initialize_display_options' ) );
+		add_action( 'admin_init', array( $this, 'x_slider_initialize_upload_options' ) );
 	}
 
 	/**
@@ -236,7 +257,7 @@ class X_Slider {
 			$this->thumbnail_slug,
 			$this->thumbnail_width,
 			$this->thumbnail_height,
-			true );
+			$this->crop );
 	}
 
 
@@ -316,6 +337,89 @@ class X_Slider {
 
 
 	/**
+	 * Layout section helper text
+	 *
+	 * @since 1.0.0
+	 */
+	public function x_slider_layout_options_callback() {
+		echo '<p>Select which features of slider you wish to display.</p>';
+	}
+
+
+	/**
+	 * Display section helper text
+	 *
+	 * @since 1.0.0
+	 */
+	public function x_slider_display_options_callback() {
+		echo '<p>Select which information you want to show on each slide.</p>';
+	}
+
+
+	/**
+	 * Display section helper text
+	 *
+	 * @since 1.1.0
+	 */
+	public function x_slider_upload_options_callback() {
+		echo '<p>Select options that will be applied on the slides upload</p>';
+	}
+
+
+	/**
+	 * Register the upload options for the settings page
+	 *
+	 * @since 1.1.0
+	 */
+	public function x_slider_initialize_upload_options() {
+
+		if ( false == get_option( 'x_slider_layout_options' ) ) {
+			add_option( 'x_slider_layout_options' );
+		}
+
+		add_settings_section(
+			'upload_settings_section',
+			'Slider Upload Options',
+			array( $this, 'x_slider_upload_options_callback' ),
+			'x_slider_layout_options'
+		);
+
+		add_settings_field(
+			'width',
+			'Width',
+			array( $this, 'x_slider_change_width_callback' ),
+			'x_slider_layout_options',
+			'upload_settings_section',
+			array(
+				'The width for each slide. Set 9999 if will want unlimited width.'
+			)
+		);
+
+		add_settings_field(
+			'height',
+			'Height',
+			array( $this, 'x_slider_change_height_callback' ),
+			'x_slider_layout_options',
+			'upload_settings_section',
+			array(
+				'The height for each slide. Set 9999 if will want unlimited height.'
+			)
+		);
+
+		add_settings_field(
+			'crop',
+			'Crop image',
+			array( $this, 'x_slider_crop_callback' ),
+			'x_slider_layout_options',
+			'upload_settings_section',
+			array(
+				'Activate this if you want to crop the image to fit the width and height selected.'
+			)
+		);
+	}
+
+
+	/**
 	 * Register the display options for the settings page
 	 *
 	 * @since 1.0.0
@@ -332,6 +436,7 @@ class X_Slider {
 			array( $this, 'x_slider_display_options_callback' ),
 			'x_slider_layout_options'
 		);
+
 
 		add_settings_field(
 			'show_title',
@@ -362,7 +467,7 @@ class X_Slider {
 			'x_slider_layout_options',
 			'display_settings_section',
 			array(
-				'The label of the button'
+				'The label of the button.'
 			)
 		);
 
@@ -416,25 +521,6 @@ class X_Slider {
 	}
 
 	/**
-	 * Layout section helper text
-	 *
-	 * @since 1.0.0
-	 */
-	public function x_slider_layout_options_callback() {
-		echo '<p>Select which features of slider you wish to display.</p>';
-	}
-
-	/**
-	 * Display section helper text
-	 *
-	 * @since 1.0.0
-	 */
-	public function x_slider_display_options_callback() {
-		echo '<p>Select which information you want to show on each slide.</p>';
-	}
-
-
-	/**
 	 * Show title field
 	 *
 	 * @param $args
@@ -442,7 +528,10 @@ class X_Slider {
 	 * @since 1.0.0
 	 */
 	public function x_slider_show_title_callback( $args ) {
-		$options = get_option( 'x_slider_layout_options' );
+		$defaults = array(
+			'show_title' => '1'
+		);
+		$options  = wp_parse_args( get_option( 'x_slider_layout_options' ), $defaults );
 
 		$html = '<input type="checkbox" id="show_title" name="x_slider_layout_options[show_title]" value="1" ' . checked( 1, $options['show_title'], false ) . '/>';
 		$html .= '<label for="show_title"> ' . $args[0] . '</label>';
@@ -458,7 +547,10 @@ class X_Slider {
 	 * @since 1.0.0
 	 */
 	public function x_slider_show_excerpt_callback( $args ) {
-		$options = get_option( 'x_slider_layout_options' );
+		$defaults = array(
+			'show_excerpt' => '1'
+		);
+		$options  = wp_parse_args( get_option( 'x_slider_layout_options' ), $defaults );
 
 		$html = '<input type="checkbox" id="show_excerpt" name="x_slider_layout_options[show_excerpt]" value="1" ' . checked( 1, $options['show_excerpt'], false ) . '/>';
 		$html .= '<label for="show_excerpt"> ' . $args[0] . '</label>';
@@ -474,7 +566,10 @@ class X_Slider {
 	 * @since 1.0.0
 	 */
 	public function x_slider_toggle_bullets_callback( $args ) {
-		$options = get_option( 'x_slider_layout_options' );
+		$defaults = array(
+			'show_bullets' => '1'
+		);
+		$options  = wp_parse_args( get_option( 'x_slider_layout_options' ), $defaults );
 
 		$html = '<input type="checkbox" id="show_bullets" name="x_slider_layout_options[show_bullets]" value="1" ' . checked( 1, $options['show_bullets'], false ) . '/>';
 		$html .= '<label for="show_bullets"> ' . $args[0] . '</label>';
@@ -497,8 +592,64 @@ class X_Slider {
 		$options  = wp_parse_args( get_option( 'x_slider_layout_options' ), $defaults );
 
 		$html = '<input type="text" id="button_label" name="x_slider_layout_options[button_label]" value="' . sanitize_text_field( $options['button_label'] ) . '" />';
-
 		$html .= '<label for="button_label"> ' . $args[0] . '</label>';
+
+		echo $html;
+	}
+
+	/**
+	 * Width field
+	 *
+	 * @param $args
+	 *
+	 * @since 1.1.0
+	 */
+	public function x_slider_change_width_callback( $args ) {
+		$defaults = array(
+			'width' => '9999'
+		);
+		$options  = wp_parse_args( get_option( 'x_slider_layout_options' ), $defaults );
+
+		$html = '<input type="text" id="width" name="x_slider_layout_options[width]" value="' . sanitize_text_field( $options['width'] ) . '" />';
+		$html .= '<label for="width"> ' . $args[0] . '</label>';
+
+		echo $html;
+	}
+
+	/**
+	 * Height field
+	 *
+	 * @param $args
+	 *
+	 * @since 1.1.0
+	 */
+	public function x_slider_change_height_callback( $args ) {
+		$defaults = array(
+			'height' => '450'
+		);
+		$options  = wp_parse_args( get_option( 'x_slider_layout_options' ), $defaults );
+
+		$html = '<input type="text" id="height" name="x_slider_layout_options[height]" value="' . sanitize_text_field( $options['height'] ) . '" />';
+		$html .= '<label for="height"> ' . $args[0] . '</label>';
+
+		echo $html;
+	}
+
+	/**
+	 * Crop field
+	 *
+	 * @param $args
+	 *
+	 * @since 1.1.0
+	 */
+	public function x_slider_crop_callback( $args ) {
+		$defaults = array(
+			'crop' => '1'
+		);
+		$options  = wp_parse_args( get_option( 'x_slider_layout_options' ), $defaults );
+
+		$html = '<input type="checkbox" id="crop" name="x_slider_layout_options[crop]" value="1" ' . checked( 1, $options['crop'], false ) . '/>';
+		$html .= '<label for="crop"> ' . $args[0] . '</label>';
 
 		echo $html;
 	}
@@ -517,7 +668,6 @@ class X_Slider {
 		$options  = wp_parse_args( get_option( 'x_slider_layout_options' ), $defaults );
 
 		$html = '<input type="text" id="timeout" name="x_slider_layout_options[timeout]" value="' . sanitize_text_field( $options['timeout'] ) . '" />';
-
 		$html .= '<label for="timeout"> ' . $args[0] . '</label>';
 
 		echo $html;
