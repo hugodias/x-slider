@@ -68,7 +68,7 @@ class X_Slider {
 	public function __construct() {
 
 		$this->name             = 'x-slider';
-		$this->version          = '1.0.0';
+		$this->version          = '1.0.2';
 		$this->thumbnail_slug   = 'x_slider_full';
 		$this->thumbnail_name   = 'X-Slider Full';
 		$this->thumbnail_width  = 9999;
