@@ -38,3 +38,8 @@ The X-slider was created with the purpose of being simple, easy to use, easy to 
 1. In any place of your theme call the function: `x_slider()`
 1. Done!
 
+
+== Changelog ==
+= 1.1.0 =
+* Added width, height and crop options to settings page
+* Minor admin layout changes
