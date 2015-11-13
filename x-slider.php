@@ -14,7 +14,7 @@
  * Plugin Name: X-Slider
  * Plugin URI:  https://github.com/hugodias/x-slider
  * Description: Simple and lightweight slider for Wordpress
- * Version:     1.1.1
+ * Version:     1.2.0
  * Author:      Hugo Dias
  * Author URI:  http://github.com/hugodias
  * License:     GPL-2.0+
@@ -22,15 +22,15 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
+if (!defined('WPINC')) {
+    die;
 }
 
 /**
  * Includes the core plugin class for executing the plugin.
  */
-require_once( plugin_dir_path( __FILE__ ) . 'admin/class-x-slider.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'client/class-x-slider-client.php' );
+require_once(plugin_dir_path(__FILE__) . 'admin/class-x-slider.php');
+require_once(plugin_dir_path(__FILE__) . 'client/class-x-slider-client.php');
 
 /**
  * Begins execution of the plugin.
@@ -41,9 +41,10 @@ require_once( plugin_dir_path( __FILE__ ) . 'client/class-x-slider-client.php' )
  *
  * @since    1.0.0
  */
-function run_x_slider() {
-	$plugin = new X_Slider();
-	$plugin->run();
+function run_x_slider()
+{
+    $plugin = new X_Slider();
+    $plugin->run();
 }
 
 run_x_slider();
@@ -60,8 +61,8 @@ run_x_slider();
  *
  * @since 1.0.0
  */
-function x_slider( $featured_image = null ) {
-	$xSlider = new X_Slider_Client( $featured_image );
-
-	return $xSlider->run();
+function x_slider($featured_image = null)
+{
+    $xSlider = new X_Slider_Client($featured_image);
+    echo $xSlider->run();
 }

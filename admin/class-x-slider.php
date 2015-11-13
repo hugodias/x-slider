@@ -87,7 +87,7 @@ class X_Slider
     {
 
         $this->name = 'x-slider';
-        $this->version = '1.1.1';
+        $this->version = '1.2.0';
         $this->thumbnail_slug = 'x_slider_full';
         $this->thumbnail_name = 'X-Slider Full';
 
@@ -125,9 +125,24 @@ class X_Slider
         add_action('admin_menu', array($this, 'x_slider_plugin_menu'));
 
 
+        add_action('admin_init', array($this, 'x_slider_initialize_tips'));
         add_action('admin_init', array($this, 'x_slider_initialize_layout_options'));
         add_action('admin_init', array($this, 'x_slider_initialize_display_options'));
         add_action('admin_init', array($this, 'x_slider_initialize_upload_options'));
+
+
+        add_shortcode('x-slider', array($this, 'x_slider_shortcode'));
+    }
+
+    /**
+     * X-Slider shortcode
+     *
+     * @since 1.2.0
+     */
+    public function x_slider_shortcode()
+    {
+        $xSlider = new X_Slider_Client();
+        return $xSlider->run();
     }
 
     /**
@@ -383,6 +398,32 @@ class X_Slider
         echo '<p>Select options that will be applied on the slides upload</p>';
     }
 
+    /**
+     * Display tips helper
+     *
+     * @since 1.2.0
+     */
+    public function x_slider_tips_callback()
+    {
+        echo '<p>To show the slider you just need to call the <code>x_slider()</code> function in any place of your theme.</p>';
+        echo '<p>You can show the slider inside any post or page as well using the <code>[x-slider]</code> shortcode</p>';
+        echo '<hr/>';
+    }
+
+    /**
+     * Tips section
+     *
+     * @since 1.2.0
+     */
+    public function x_slider_initialize_tips()
+    {
+        add_settings_section(
+            'tips_section',
+            'Getting Started',
+            array($this, 'x_slider_tips_callback'),
+            'x_slider_layout_options'
+        );
+    }
 
     /**
      * Register the upload options for the settings page

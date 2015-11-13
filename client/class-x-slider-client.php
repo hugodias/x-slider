@@ -1,8 +1,9 @@
 <?php
-if ( ! function_exists( 'boolval' ) ) {
-	function boolval( $val ) {
-		return (bool) $val;
-	}
+if (!function_exists('boolval')) {
+    function boolval($val)
+    {
+        return (bool)$val;
+    }
 }
 /**
  * The client-side functionality of the plugin.
@@ -24,210 +25,232 @@ if ( ! function_exists( 'boolval' ) ) {
  * @subpackage X_Slider_Client/client
  * @author     Hugodias <hugooodias@gmail.com>
  */
-class X_Slider_Client {
+class X_Slider_Client
+{
 
-	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string $name The ID of this plugin.
-	 */
-	private $name;
+    /**
+     * The ID of this plugin.
+     *
+     * @since    1.0.0
+     * @access   private
+     * @var      string $name The ID of this plugin.
+     */
+    private $name;
 
-	/**
-	 * The current version of the plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string $version The version of the plugin
-	 */
-	private $version;
+    /**
+     * The current version of the plugin.
+     *
+     * @since    1.0.0
+     * @access   private
+     * @var      string $version The version of the plugin
+     */
+    private $version;
 
-	/**
-	 * The Featured Image Slug used for the slides
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string $featured_image_name The Featured image slug.
-	 */
-	private $featured_image_name;
-
-
-	/**
-	 * Enable bullets navigation
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var bool
-	 */
-	private $bullets;
+    /**
+     * The Featured Image Slug used for the slides
+     *
+     * @since    1.0.0
+     * @access   private
+     * @var      string $featured_image_name The Featured image slug.
+     */
+    private $featured_image_name;
 
 
-	/**
-	 * Plugin options
-	 *
-	 * @since 1.0.0
-	 * @access protected
-	 * @var array
-	 */
-	protected $options;
+    /**
+     * Enable bullets navigation
+     *
+     * @since    1.0.0
+     * @access   private
+     * @var bool
+     */
+    private $bullets;
 
 
-	/**
-	 * Timeout option
-	 *
-	 * @var string
-	 */
-	protected $timeout;
-
-	/**
-	 * Button label option
-	 *
-	 * @var string
-	 */
-	protected $button_label;
+    /**
+     * Plugin options
+     *
+     * @since 1.0.0
+     * @access protected
+     * @var array
+     */
+    protected $options;
 
 
-	/**
-	 * Initializes the plugin by defining the properties.
-	 *
-	 * @since 1.0.0
-	 */
-	public function __construct( $featured_image_name = null ) {
+    /**
+     * Timeout option
+     *
+     * @var string
+     */
+    protected $timeout;
 
-		$this->name                = 'x-slider';
-		$this->version             = '1.1.1';
-		$this->featured_image_name = $featured_image_name ? $featured_image_name : 'x_slider_full';
-
-		$this->options = get_option( 'x_slider_layout_options' );
-
-		$this->bullets = ! empty( $this->options['show_bullets'] );
-		$this->timeout = ! empty( $this->options['timeout'] ) ? $this->options['timeout'] : '5000';
-
-		$this->button_label = ! empty( $this->options['button_label'] ) ? $this->options['button_label'] : 'Read more';
-	}
-
-	/**
-	 * Defines the hooks that will register and enqueue the JavaScriot
-	 * and the meta box that will render the option.
-	 *
-	 * @since 1.0.0
-	 */
-	public function run() {
-		$slides = $this->get_slides();
-
-		if ( $slides ) {
-			$slider = '<div class="x-slider" ' . $this->mount_attributes() . '>';
-
-			$slider .= '<ul>';
-
-			foreach ( $slides as $slide ) {
-				$slider .= $this->loopAndRender( $slide['image'], $slide['title'], $slide['description'], $slide['link'], $slide['label'] );
-			}
-
-			$slider .= '</ul></div>';
-
-			echo $slider;
-		} else {
-			echo "No sliders avaliable";
-		}
-
-		return;
-	}
-
-	/**
-	 * Render a single slide
-	 *
-	 * @param $image
-	 * @param $title
-	 * @param $description
-	 * @param $link
-	 * @param $label
-	 *
-	 * @return string
-	 *
-	 * @since 1.0.0
-	 */
-	private function loopAndRender( $image, $title = null, $description = null, $link = null, $label = null ) {
-		$tmpl = '<li id="x-slider-' . mt_rand( 1000, 9999 ) . '"  data-x-slider-image="' . esc_url_raw( $image ) . '" >';
-
-		$tmpl .= '<div class="x-slider__info">';
-
-		if ( boolval( $this->options['show_title'] ) ) {
-			$tmpl .= '<h1>' . $title . '</h1>';
-		}
-
-		if ( boolval( $this->options['show_excerpt'] ) ) {
-			$tmpl .= '<p>' . $description . '</p>';
-		}
-
-		if ( $link && $label ) {
-			$tmpl .= '<a class="btn" href="' . $link . '">' . $label . '</a>';
-		}
-
-		$tmpl .= '</div>';
-
-		$tmpl .= '</li>';
-
-		return $tmpl;
-	}
-
-	/**
-	 * Retrieve slides selected in the Wordpress Admin
-	 *
-	 * @return array
-	 *
-	 * @since 1.0.0
-	 */
-	private function get_slides() {
-
-		$slides = array();
-
-		$args = array(
-			'meta_key'   => 'x-slider-selected',
-			'meta_value' => 1
-		);
-
-		$q = new WP_Query( $args );
-
-		if ( $q->have_posts() ) :
+    /**
+     * Button label option
+     *
+     * @var string
+     */
+    protected $button_label;
 
 
-			while ( $q->have_posts() ) : $q->the_post();
-				$slides[] = array(
-					'title'       => get_the_title(),
-					'description' => get_the_excerpt(),
-					'image'       => get_post_meta( $q->post->ID, 'slider-src', true ),
-					'link'        => get_the_permalink(),
-					'label'       => $this->button_label
-				);
-			endwhile;
+    /**
+     * Initializes the plugin by defining the properties.
+     *
+     * @since 1.0.0
+     */
+    public function __construct($featured_image_name = null)
+    {
 
-			wp_reset_postdata();
+        $this->name = 'x-slider';
+        $this->version = '1.2.0';
+        $this->featured_image_name = $featured_image_name ? $featured_image_name : 'x_slider_full';
 
-		else:
-			# Todo:
-		endif;
+        $this->options = get_option('x_slider_layout_options');
 
-		return $slides;
-	}
+        $this->bullets = !empty($this->options['show_bullets']);
+        $this->timeout = !empty($this->options['timeout']) ? $this->options['timeout'] : '5000';
+
+        $this->button_label = !empty($this->options['button_label']) ? $this->options['button_label'] : 'Read more';
+    }
+
+    /**
+     * Defines the hooks that will register and enqueue the JavaScriot
+     * and the meta box that will render the option.
+     *
+     * @since 1.0.0
+     */
+    public function run()
+    {
+        $slides = $this->get_slides();
+
+        if ($slides) {
+            $slider = '<div class="x-slider" ' . $this->mount_attributes() . '>';
+
+            $slider .= '<ul>';
+
+            foreach ($slides as $slide) {
+                $slider .= $this->loopAndRender($slide['image'], $slide['title'], $slide['description'], $slide['link'], $slide['label']);
+            }
+
+            $slider .= '</ul></div>';
+
+            return $slider;
+        } else {
+            return "No sliders avaliable";
+        }
+
+        return;
+    }
+
+    /**
+     * Render a single slide
+     *
+     * @param $image
+     * @param $title
+     * @param $description
+     * @param $link
+     * @param $label
+     *
+     * @return string
+     *
+     * @since 1.0.0
+     */
+    private function loopAndRender($image, $title = null, $description = null, $link = null, $label = null)
+    {
+        $tmpl = '<li id="x-slider-' . mt_rand(1000, 9999) . '"  data-x-slider-image="' . esc_url_raw($image) . '" >';
+
+        $tmpl .= '<div class="x-slider__info">';
+
+        if (boolval($this->options['show_title'])) {
+            $tmpl .= '<h1>' . $title . '</h1>';
+        }
+
+        if (boolval($this->options['show_excerpt'])) {
+            $tmpl .= '<p>' . $description . '</p>';
+        }
+
+        if ($link && $label) {
+            $tmpl .= '<a class="btn" href="' . $link . '">' . $label . '</a>';
+        }
+
+        $tmpl .= '</div>';
+
+        $tmpl .= '</li>';
+
+        return $tmpl;
+    }
+
+    /**
+     * Retrieve slides selected in the Wordpress Admin
+     *
+     * @return array
+     *
+     * @since 1.0.0
+     */
+    private function get_slides()
+    {
+
+        $slides = array();
+
+        $args = array(
+            'meta_key' => 'x-slider-selected',
+            'meta_value' => 1
+        );
+
+        $q = new WP_Query($args);
+
+        if ($q->have_posts()) :
 
 
-	/**
-	 * Render slide attriutes via html data
-	 *
-	 * @return string
-	 *
-	 * @since 1.0.0
-	 */
-	private function mount_attributes() {
-		$attr = '';
+            while ($q->have_posts()) : $q->the_post();
+                $slides[] = array(
+                    'title' => get_the_title($q->post->ID),
+                    'description' => wp_trim_words($q->post->post_content),
+                    'image' => get_post_meta($q->post->ID, 'slider-src', true),
+                    'link' => get_the_permalink($q->post->ID),
+                    'label' => $this->button_label
+                );
+            endwhile;
 
-		$attr .= 'data-x-slider-timeout = "' . $this->timeout . '" ';
-		$attr .= 'data-x-slider-bullets = "' . $this->bullets . '" ';
+            wp_reset_postdata();
 
-		return $attr;
-	}
+        else:
+            # Todo:
+        endif;
 
+        return $slides;
+    }
+
+
+    /**
+     * Render slide attriutes via html data
+     *
+     * @return string
+     *
+     * @since 1.0.0
+     */
+    private function mount_attributes()
+    {
+        $attr = '';
+
+        $attr .= 'data-x-slider-timeout = "' . $this->timeout . '" ';
+        $attr .= 'data-x-slider-bullets = "' . $this->bullets . '" ';
+
+        return $attr;
+    }
+
+
+    /**
+     * Fix get the excerpt wp function
+     *
+     * @param $post_id
+     * @return mixed
+     */
+    public function robins_get_the_excerpt($post_id)
+    {
+        global $post;
+        $save_post = $post;
+        $post = get_post($post_id);
+        $output = get_the_excerpt();
+        $post = $save_post;
+        return $output;
+    }
 }

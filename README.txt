@@ -3,7 +3,7 @@ Contributors: hugooodias
 Tags: slider
 Requires at least: 3.9.2
 Tested up to: 4.3.1
-Stable tag: 1.1.1
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -27,6 +27,7 @@ The X-slider was created with the purpose of being simple, easy to use, easy to 
 * All slides work based on Posts. You attach a slide directly inside the post editor.
 * Super easy to customize, as a developer you'll love it.
 * Super easy to add, change and remove the slides. The admin user will also love it.
+* Shortcode for showing the slider anywhere
 
 == Installation ==
 1. Upload `x-slider` to the `/wp-content/plugins/` directory
@@ -40,9 +41,23 @@ The X-slider was created with the purpose of being simple, easy to use, easy to 
 
 
 == Changelog ==
+
+= 1.2.0 =
+* New Featured: Slider Shortcode. Usage: [x-slider]
+* Settings page: Added a getting started section
+* Bugfix: Some CSS and Javascript changes for better compatibility with other themes
+* Added some screenshots in plugin page
+
+= 1.1.1 =
+* Bugfix: Checkbox not working correctly on settings page
+
 = 1.1.0 =
 * Added width, height and crop options to settings page
 * Minor admin layout changes
 
-= 1.1.1 =
-* Bugfix: Checkbox not working correctly on settings page
+== Screenshots ==
+
+1. The slide upload box lives is located inside the post page. Easy and quick to use.
+2. After uploading the image, you can choose to show or not on the slider.
+3. The settings page has only essential options , we do not want to confuse the user.
+4. Create a beautiful, responsive and lightweight slider in seconds.
