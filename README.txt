@@ -3,7 +3,7 @@ Contributors: hugooodias
 Tags: slider
 Requires at least: 3.9.2
 Tested up to: 4.3.1
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -43,3 +43,6 @@ The X-slider was created with the purpose of being simple, easy to use, easy to 
 = 1.1.0 =
 * Added width, height and crop options to settings page
 * Minor admin layout changes
+
+= 1.1.1 =
+* Bugfix: Checkbox not working correctly on settings page

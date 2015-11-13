@@ -97,7 +97,7 @@ class X_Slider_Client {
 	public function __construct( $featured_image_name = null ) {
 
 		$this->name                = 'x-slider';
-		$this->version             = '1.1.0';
+		$this->version             = '1.1.1';
 		$this->featured_image_name = $featured_image_name ? $featured_image_name : 'x_slider_full';
 
 		$this->options = get_option( 'x_slider_layout_options' );
