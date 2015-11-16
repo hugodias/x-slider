@@ -3,7 +3,7 @@ Contributors: hugooodias
 Tags: slider
 Requires at least: 3.9.2
 Tested up to: 4.3.1
-Stable tag: 1.2.0
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,6 +42,11 @@ The X-slider was created with the purpose of being simple, easy to use, easy to 
 
 == Changelog ==
 
+= 1.3.0 =
+* Added query feature to match Wordpress Wp Query style. Now you can query your sliders the way you already know: using
+the wp query style.
+* Added a FAQ section on the docs
+
 = 1.2.0 =
 * New Featured: Slider Shortcode. Usage: [x-slider]
 * Settings page: Added a getting started section
@@ -61,3 +66,46 @@ The X-slider was created with the purpose of being simple, easy to use, easy to 
 2. After uploading the image, you can choose to show or not on the slider.
 3. The settings page has only essential options , we do not want to confuse the user.
 4. Create a beautiful, responsive and lightweight slider in seconds.
+
+
+== Frequently Asked Questions ==
+
+= How to install this plugin and getting it working on my theme? =
+First of all you'll need yo install this plugin. Go to your plugins page on your Wordpress dashboard and search for X-slider.
+After installing you just need to set it in your theme.
+Open your favorite Text editor wherever you want to display it, for example, if you want to display on the top of every page,
+open your header.php theme and inside the <body> tag, insert the following code:
+
+`<?php x_slider(); ?>`
+
+= How to filter posts showing on slider? =
+
+You can use [WP_Query](https://codex.wordpress.org/Class_Reference/WP_Query) syntax on X-slider, so let's say you want to only show slides for the "Featured" category,
+you should write:
+
+`<?php x_slider(array('category_name' => 'featured')); ?>`
+
+= I want to change the order, how to do that? =
+
+As already mentioned before, you can use [WP_Query](https://codex.wordpress.org/Class_Reference/WP_Query) syntax for customizing your slider.
+Ex: Show only posts from "Featured" category ordered by date limiting to 5 slides max
+
+`<?php x_slider(array('category_name' => 'featured', 'orderby' => 'date', 'order' => 'DESC', posts_per_page => 5)); ?>`
+
+= How to change the slider image dimensions? =
+
+Accessing X_slider settings page right on the sidebar, click in "X-Slider Settings", on the "Slider Upload Options"
+section you'll be able to change the width and height settings.
+
+= How to change the slider timeout? =
+
+On settings page :)
+
+= This slider is too ugly, how to customize it? =
+
+You can write your own CSS if you want to. The slider structure is very simple. Basically it's a div with the x-slider class ".x-slider"
+with a UL and the slides are LI's with a container wrapping a title, description and a button.
+
+= Can i have multiple sliders on the same page? =
+
+Sure, just call `<?php x_slider(); ?>` as many times you want to.
