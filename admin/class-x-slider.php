@@ -87,7 +87,7 @@ class X_Slider
     {
 
         $this->name = 'x-slider';
-        $this->version = '1.2.0';
+        $this->version = '1.3.0';
         $this->thumbnail_slug = 'x_slider_full';
         $this->thumbnail_name = 'X-Slider Full';
 
