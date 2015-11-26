@@ -745,10 +745,12 @@ class X_Slider
     {
         $output = array();
 
-        foreach ($input as $key => $value) {
-            if (isset($input[$key])) {
-                $output[$key] = strip_tags(stripslashes($input[$key]));
-            }
+        if(!empty($input)) {
+          foreach ($input as $key => $value) {
+              if (isset($input[$key])) {
+                  $output[$key] = strip_tags(stripslashes($input[$key]));
+              }
+          }
         }
 
         return apply_filters(array($this, 'x_slider_validate_inputs'), $output, $input);
@@ -756,4 +758,3 @@ class X_Slider
 
 
 }
-
