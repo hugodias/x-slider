@@ -2,8 +2,8 @@
 Contributors: hugooodias
 Tags: slider
 Requires at least: 3.9.2
-Tested up to: 4.3.1
-Stable tag: 1.3.0
+Tested up to: 4.4.0
+Stable tag: 1.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -41,6 +41,9 @@ The X-slider was created with the purpose of being simple, easy to use, easy to 
 
 
 == Changelog ==
+
+= 1.3.1 =
+* Compatible with Wordpress 4.4
 
 = 1.3.0 =
 * Added query feature to match Wordpress Wp Query style. Now you can query your sliders the way you already know: using

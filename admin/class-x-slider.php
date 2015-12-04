@@ -87,7 +87,7 @@ class X_Slider
     {
 
         $this->name = 'x-slider';
-        $this->version = '1.3.0';
+        $this->version = '1.3.1';
         $this->thumbnail_slug = 'x_slider_full';
         $this->thumbnail_name = 'X-Slider Full';
 
@@ -107,7 +107,6 @@ class X_Slider
      */
     public function run()
     {
-
         add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_styles'));
         add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
 
@@ -121,15 +120,12 @@ class X_Slider
 
         add_filter('image_size_names_choose', array($this, 'add_custom_sizes'));
 
-
         add_action('admin_menu', array($this, 'x_slider_plugin_menu'));
-
 
         add_action('admin_init', array($this, 'x_slider_initialize_tips'));
         add_action('admin_init', array($this, 'x_slider_initialize_layout_options'));
         add_action('admin_init', array($this, 'x_slider_initialize_display_options'));
         add_action('admin_init', array($this, 'x_slider_initialize_upload_options'));
-
 
         add_shortcode('x-slider', array($this, 'x_slider_shortcode'));
     }
@@ -576,8 +572,7 @@ class X_Slider
 
         register_setting(
             'x_slider_layout_options',
-            'x_slider_layout_options',
-            array($this, 'x_slider_validate_inputs')
+            'x_slider_layout_options'
         );
 
     }
@@ -730,31 +725,4 @@ class X_Slider
 
         echo $html;
     }
-
-
-    /**
-     * Santitize fields values before save
-     *
-     * @param $input
-     *
-     * @return mixed|void
-     *
-     * @since 1.0.0
-     */
-    public function x_slider_validate_inputs($input)
-    {
-        $output = array();
-
-        if(!empty($input)) {
-          foreach ($input as $key => $value) {
-              if (isset($input[$key])) {
-                  $output[$key] = strip_tags(stripslashes($input[$key]));
-              }
-          }
-        }
-
-        return apply_filters(array($this, 'x_slider_validate_inputs'), $output, $input);
-    }
-
-
 }
