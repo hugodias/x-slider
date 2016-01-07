@@ -155,16 +155,16 @@ class X_Slider_Client
      */
     private function loopAndRender($image, $title = null, $description = null, $link = null, $label = null)
     {
-        $tmpl = '<li id="x-slider-' . mt_rand(1000, 9999) . '"  data-x-slider-image="' . esc_url_raw($image) . '" >';
+        $tmpl = '<li id="x-slider-' . mt_rand(1000, 9999) . '"  data-x-slider-image="' . esc_url_raw($image) . '">';
 
-        $tmpl .= '<div class="x-slider__info">';
+        $tmpl .= '<div class="x-slider__info" itemscope="" itemtype="http://schema.org/BlogPosting">';
 
         if (boolval($this->options['show_title'])) {
-            $tmpl .= '<h1>' . $title . '</h1>';
+            $tmpl .= '<h2 itemprop="name headline">' . $title . '</h2>';
         }
 
         if (boolval($this->options['show_excerpt'])) {
-            $tmpl .= '<p>' . $description . '</p>';
+            $tmpl .= '<p itemprop="description">' . $description . '</p>';
         }
 
         if ($link && $label) {
