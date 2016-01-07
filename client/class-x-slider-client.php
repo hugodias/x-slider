@@ -168,7 +168,7 @@ class X_Slider_Client
         }
 
         if ($link && $label) {
-            $tmpl .= '<a class="btn" href="' . $link . '">' . $label . '</a>';
+            $tmpl .= '<a class="btn" href="' . $link . '" itemprop="url">' . $label . '</a>';
         }
 
         $tmpl .= '</div>';
